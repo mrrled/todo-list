@@ -128,15 +128,19 @@ class Task extends Component {
 }
 
 class TodoList extends Component {
-  constructor() {
+  constructor(tasks) {
     super();
-    this.state = {
-      tasks: [
+    if (!tasks) {
+      tasks = [
         { id: 1, text: "Сделать домашку", completed: false },
         { id: 2, text: "Сделать практику", completed: false },
         { id: 3, text: "Пойти домой", completed: false }
-      ],
-      nextId: 4
+      ]
+    }
+    console.log(tasks)
+    this.state = {
+      tasks: tasks,
+      nextId: tasks.length + 1,
     };
   }
 
@@ -147,6 +151,7 @@ class TodoList extends Component {
       completed: false
     });
     this.update();
+    localStorage.setItem("todoList", JSON.stringify(this.state.tasks));
   }
 
   onToggleTask = (id) => {
@@ -160,6 +165,7 @@ class TodoList extends Component {
   onDeleteTask = (id) => {
     this.state.tasks = this.state.tasks.filter(t => t.id !== id);
     this.update();
+    localStorage.setItem("todoList", JSON.stringify(this.state.tasks));
   }
 
   render() {
@@ -178,5 +184,6 @@ class TodoList extends Component {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.body.appendChild(new TodoList().getDomNode());
+  let todoList = new TodoList(JSON.parse(localStorage.getItem('todoList')));
+  document.body.appendChild(todoList.getDomNode());
 });
