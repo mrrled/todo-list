@@ -44,6 +44,7 @@ class Component {
     this._domNode.replaceWith(newNode);
     this._domNode = newNode;
   }
+
 }
 
 class AddTask extends Component {
@@ -115,8 +116,10 @@ class Task extends Component {
       checkbox.checked = true;
     }
     return createElement("li", {}, [
-      checkbox,
-      createElement("label", { class: labelClass }, this.task.text),
+      createElement("label", { class: labelClass }, [
+        checkbox,
+        this.task.text
+      ]),
       createElement("button", { class: buttonClass }, "🗑️", {
         click: this.onDeleteClick
       })
